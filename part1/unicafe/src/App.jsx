@@ -15,8 +15,6 @@ const App = () => {
   const handleBadClick = () => {
     setBad(bad + 1)
   }
-  const total = good + neutral + bad
-  const score = good * 1 + neutral * 0 + bad * -1
 
   return (
     <>
@@ -24,6 +22,19 @@ const App = () => {
       <Button handleClick={handleGoodClick} text='good' />
       <Button handleClick={handleNeutralClick} text='neutral' />
       <Button handleClick={handleBadClick} text='bad' />
+      <Statistics good={good} neutral={neutral} bad={bad} />
+    </>
+  )
+}
+
+const Button = ({ handleClick, text }) => <button onClick={handleClick}>{text}</button>
+
+const Statistics = ({ good, neutral, bad }) => {
+
+  const total = good + neutral + bad
+  const score = good * 1 + neutral * 0 + bad * -1
+  return (
+    <>
       <h1>statistics</h1>
       <p>good {good}</p>
       <p>neutral {neutral}</p>
@@ -34,7 +45,5 @@ const App = () => {
     </>
   )
 }
-
-const Button = ({ handleClick, text }) => <button onClick={handleClick}>{text}</button>
 
 export default App
