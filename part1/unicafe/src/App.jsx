@@ -30,9 +30,15 @@ const App = () => {
 const Button = ({ handleClick, text }) => <button onClick={handleClick}>{text}</button>
 
 const Statistics = ({ good, neutral, bad }) => {
-
   const total = good + neutral + bad
   const score = good * 1 + neutral * 0 + bad * -1
+
+  if (total === 0) return (
+    <>
+      <h1>statistics</h1>
+      <p>No feedback given</p>
+    </>
+  )
   return (
     <>
       <h1>statistics</h1>
