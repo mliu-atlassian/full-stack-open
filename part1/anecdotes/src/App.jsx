@@ -13,11 +13,19 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
+  const [points, setPoints] = useState(new Array(anecdotes.length).fill(0))
   const handleNextClick = () => setSelected(Math.floor(Math.random() * anecdotes.length))
+  const handleVoteClick = () => {
+    const copy = [...points]
+    copy[selected]+=1
+    setPoints(copy)
+  }
 
   return (
     <>
       <p>{anecdotes[selected]}</p>
+      <p>has {points[selected]} votes</p>
+      <Button handleClick={handleVoteClick} text='vote' />
       <Button handleClick={handleNextClick} text='next anecdote' />
     </>
   )
