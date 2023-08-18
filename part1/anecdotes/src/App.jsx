@@ -21,12 +21,25 @@ const App = () => {
     setPoints(copy)
   }
 
+  const max = points.indexOf(Math.max(...points))
+
   return (
     <>
-      <p>{anecdotes[selected]}</p>
-      <p>has {points[selected]} votes</p>
+      <h1>Anecdote of the day</h1>
+      <Anecdote text={anecdotes[selected]} points={points[selected]} />
       <Button handleClick={handleVoteClick} text='vote' />
       <Button handleClick={handleNextClick} text='next anecdote' />
+      <h1>Anecdote with most votes</h1>
+      <Anecdote text={anecdotes[max]} points={points[max]} />
+    </>
+  )
+}
+
+const Anecdote = ({text, points}) => {
+  return (
+    <>
+      <p>{text}</p>
+      <p>has {points} votes</p>
     </>
   )
 }
