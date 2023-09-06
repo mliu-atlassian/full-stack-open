@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react'
 
 import personService from './services/persons'
 
-const Notification = ({ message }) => {
+const Notification = ({ message, error }) => {
   if (message !== null) {
-    return <div className='notification'>{message}</div>
+    return <div className={error ? 'error' : 'success'}>{message}</div>
   }
 }
 
@@ -42,6 +42,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
   const [message, setMessage] = useState(null)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     personService
@@ -69,6 +70,14 @@ const App = () => {
           .then(returnedPerson => {
             setPersons(persons.map(person => person.id !== oldPerson.id ? person : returnedPerson))
             setMessage(`Added ${newName}`)
+            setError(false)
+            setTimeout(() => setMessage(null), 5000)
+            setNewName('')
+            setNewNumber('')
+          })
+          .catch(() => {
+            setMessage(`Information of ${newName} has already been removed from server`)
+            setError(true)
             setTimeout(() => setMessage(null), 5000)
             setNewName('')
             setNewNumber('')
@@ -80,6 +89,7 @@ const App = () => {
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
           setMessage(`Added ${newName}`)
+          setError(false)
           setTimeout(() => setMessage(null), 5000)
           setNewName('')
           setNewNumber('')
@@ -97,7 +107,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message} />
+      <Notification message={message} error={error} />
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
       <h2>add a new</h2>
       <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
