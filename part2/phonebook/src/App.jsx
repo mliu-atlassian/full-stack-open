@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
@@ -15,7 +16,7 @@ const Persons = ({ persons, filter }) =>
   (filter ? persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase())) : persons)
     .map(person => <Person key={person.name} person={person} />)
 
-const Person = ({person}) => <div>{person.name} {person.number}</div>
+const Person = ({ person }) => <div>{person.name} {person.number}</div>
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -44,7 +45,11 @@ const App = () => {
         name: newName,
         number: newNumber
       }
-      setPersons(persons.concat(personObject))
+      axios
+        .post('http://localhost:3001/persons', personObject)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+        })
     }
     setNewName('')
     setNewNumber('')
