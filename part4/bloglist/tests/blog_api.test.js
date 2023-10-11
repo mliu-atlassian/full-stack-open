@@ -31,6 +31,13 @@ describe('when there is initially some notes saved', () => {
     const titles = response.body.map(b => b.title)
     expect(titles).toContain('TDD harms architecture')
   })
+
+  test('the unique identifier property is name `id`', async () => {
+    const response = await api.get('/api/blogs')
+    response.body.map(
+      blog => expect(blog.id).toBeDefined()
+    )
+  })
 })
 
 afterAll(async () => {
