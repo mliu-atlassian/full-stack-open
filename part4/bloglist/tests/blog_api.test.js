@@ -61,6 +61,22 @@ describe('addition of a new blog', () => {
     const titles = blogsAtEnd.map(b => b.title)
     expect(titles).toContain('Mike')
   })
+
+  test('if likes property is missing it will default to zero', async () => {
+    const newBlog = {
+      title: 'Mike',
+      author: 'Mike Liu',
+      url: 'liumike.dev',
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    const savedBlog = blogsAtEnd.find(b => b.title === newBlog.title)
+    expect(savedBlog.likes).toBe(0)
+  })
 })
 
 afterAll(async () => {
