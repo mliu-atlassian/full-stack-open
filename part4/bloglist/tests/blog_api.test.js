@@ -77,6 +77,38 @@ describe('addition of a new blog', () => {
     const savedBlog = blogsAtEnd.find(b => b.title === newBlog.title)
     expect(savedBlog.likes).toBe(0)
   })
+
+  test('fails if title is missing', async () => {
+    const newBlog = {
+      author: 'Mike Liu',
+      url: 'liumike.dev',
+      likes: 5,
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  })
+
+  test('fails if url is missing', async () => {
+    const newBlog = {
+      title: 'Mike',
+      author: 'Mike Liu',
+      likes: 5,
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  })
 })
 
 afterAll(async () => {
